@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FixAI | דיסקונט 360</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --purple: #5B4FCF;
+    --purple-dark: #3D35A0;
+    --purple-light: #7B6FE8;
+    --purple-bg: #F0EFFE;
+    --green: #2ECC71;
+    --green-dark: #1FA85A;
+    --green-light: #4CD986;
+    --bg: #FFFFFF;
+    --surface2: #F7F7FC;
+    --text: #1A1A2E;
+    --muted: #7A7A9A;
+    --border: #E4E2F7;
+    --shadow: 0 2px 12px rgba(91,79,207,0.1);
+  }
+  body { font-family: 'Heebo', sans-serif; background: var(--bg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; color: var(--text); }
+
+  .header {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, var(--purple-light) 100%);
+    padding: 13px 20px; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 3px 14px rgba(91,79,207,0.3); flex-shrink: 0;
+  }
+  .logo { width: 42px; height: 42px; background: var(--green); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; color: white; flex-shrink: 0; box-shadow: 0 2px 10px rgba(46,204,113,0.45); }
+  .hinfo { flex: 1; }
+  .htitle { font-size: 17px; font-weight: 800; color: white; }
+  .hsub { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .badge { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,0.9); }
+  .dot { width: 6px; height: 6px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4;transform:scale(1.4)} }
+  .reset-btn { background: none; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; color: rgba(255,255,255,0.85); font-family: 'Heebo',sans-serif; font-size: 11px; padding: 5px 11px; cursor: pointer; transition: all .15s; }
+  .reset-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+
+  /* API KEY SETUP BANNER */
+  .setup-banner {
+    background: #FFFBEB; border-bottom: 2px solid #FDE68A;
+    padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0; font-size: 13px;
+  }
+  .setup-banner input {
+    flex: 1; border: 1.5px solid #FDE68A; border-radius: 8px;
+    padding: 6px 10px; font-family: 'Heebo',sans-serif; font-size: 13px;
+    outline: none; direction: ltr;
+  }
+  .setup-banner input:focus { border-color: var(--purple); }
+  .setup-banner button {
+    background: var(--purple); color: white; border: none;
+    border-radius: 8px; padding: 6px 14px; font-family: 'Heebo',sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  .setup-banner button:hover { background: var(--purple-dark); }
+  .setup-banner .setup-label { color: var(--muted); white-space: nowrap; font-weight: 600; }
+
+  .chips { background: white; border-bottom: 2px solid var(--border); padding: 9px 14px; display: flex; gap: 7px; overflow-x: auto; flex-shrink: 0; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 20px; padding: 5px 13px; font-size: 12px; font-family: 'Heebo',sans-serif; color: var(--purple); font-weight: 600; cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0; }
+  .chip:hover { background: var(--purple); color: white; border-color: var(--purple); transform: translateY(-1px); }
+
+  .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 11px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .row { display: flex; gap: 8px; align-items: flex-end; animation: up .22s ease; }
+  .row.user { flex-direction: row-reverse; }
+  @keyframes up { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+
+  .av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .av.bot { background: var(--green); color: white; }
+  .av.user { background: var(--green-dark); color: white; }
+
+  .bub { max-width: 76%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.65; }
+  .bub.bot { background: white; color: var(--text); border: 1.5px solid var(--border); border-bottom-right-radius: 4px; box-shadow: var(--shadow); }
+  .bub.user { background: var(--purple); color: white; border-bottom-left-radius: 4px; box-shadow: 0 2px 10px rgba(91,79,207,0.3); }
+  .esc { background: var(--purple-bg); border: 1.5px solid var(--purple-light); border-radius: 9px; padding: 8px 12px; margin-top: 8px; font-size: 13px; color: var(--purple-dark); font-weight: 600; }
+
+  .typing { display: flex; gap: 4px; padding: 3px 0; }
+  .typing span { width: 7px; height: 7px; background: var(--border); border-radius: 50%; animation: bn 1.2s infinite; }
+  .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes bn { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  .welcome { text-align: center; padding: 28px 16px; color: var(--muted); margin: auto; }
+  .welcome-icon { width: 64px; height: 64px; margin: 0 auto 14px; background: linear-gradient(135deg, var(--green-dark), var(--green)); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 16px rgba(46,204,113,0.3); }
+  .welcome h3 { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+  .welcome p { font-size: 13px; max-width: 240px; margin: 0 auto; }
+  .welcome-tags { display: flex; gap: 6px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+  .wtag { background: var(--purple-bg); border: 1px solid var(--border); border-radius: 12px; padding: 3px 10px; font-size: 11px; color: var(--purple); font-weight: 600; }
+
+  .input-area { background: white; border-top: 2px solid var(--border); padding: 11px 14px; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .input-wrap { flex: 1; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 24px; display: flex; align-items: center; padding: 0 14px; transition: all .2s; }
+  .input-wrap:focus-within { border-color: var(--purple); background: white; box-shadow: 0 0 0 3px rgba(91,79,207,0.08); }
+  #inp { flex: 1; border: none; background: transparent; font-family: 'Heebo',sans-serif; font-size: 14px; color: var(--text); padding: 10px 0; outline: none; direction: rtl; }
+  #inp::placeholder { color: #BBB; }
+  .sbtn { width: 40px; height: 40px; background: linear-gradient(135deg, var(--purple-dark), var(--purple-light)); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; box-shadow: 0 2px 8px rgba(91,79,207,0.35); }
+  .sbtn:hover { transform: scale(1.07); }
+  .sbtn:disabled { background: #CCC; cursor: default; transform: none; box-shadow: none; }
+  .sbtn svg { width: 17px; height: 17px; fill: white; }
+  .foot { text-align: center; font-size: 10px; color: #CCC; padding: 4px 0 8px; background: white; flex-shrink: 0; }
+  .foot span { color: var(--green-dark); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">FIX</div>
+  <div class="hinfo">
+    <div class="htitle">FixAI &nbsp;·&nbsp; דיסקונט 360</div>
+    <div class="hsub">עוזר תקלות מיידי · Citrix · AVAYA · מסכים</div>
+  </div>
+  <div class="badge"><div class="dot"></div>פעיל</div>
+  <button class="reset-btn" onclick="resetChat()">שיחה חדשה</button>
+</div>
+
+<div class="setup-banner" id="setupBanner" style="display:none">
+  <span class="setup-label">🔑 Google API Key:</span>
+  <input type="password" id="apiKeyInput" placeholder="הדבק כאן את ה-API Key שלך..." />
+  <button onclick="saveKey()">שמור</button>
+</div>
+
+<div class="chips">
+  <button class="chip" onclick="q('Citrix לא מתחבר')">🔌 Citrix לא מתחבר</button>
+  <button class="chip" onclick="q('AVAYA לא עולה')">📞 AVAYA לא עולה</button>
+  <button class="chip" onclick="q('בעיית שמע או אוזניות לא עובדות')">🎧 בעיית שמע</button>
+  <button class="chip" onclick="q('איפוס סיסמת AVAYA או שחרור נעילה')">🔑 איפוס סיסמה</button>
+  <button class="chip" onclick="q('פיצול מסכים מסך נוסף לא עובד HDMI')">🖥️ פיצול מסכים</button>
+  <button class="chip" onclick="q('הגדרת Softphone ב WDE')">⚙️ הגדרת Softphone</button>
+  <button class="chip" onclick="q('הגדרת AVAYA מחדש פעם ראשונה')">🔧 הגדרת AVAYA</button>
+</div>
+
+<div class="msgs" id="msgs">
+  <div class="welcome">
+    <div class="welcome-icon">🛠️</div>
+    <h3>שלום! אני FixAI</h3>
+    <p>תאר את התקלה שלך בחופשיות, או בחר קטגוריה למעלה</p>
+    <div class="welcome-tags">
+      <span class="wtag">Citrix</span><span class="wtag">AVAYA</span>
+      <span class="wtag">שמע</span><span class="wtag">מסכים</span><span class="wtag">WDE</span>
+    </div>
+  </div>
+</div>
+
+<div class="input-area">
+  <div class="input-wrap">
+    <input id="inp" type="text" placeholder="תאר את התקלה..." autocomplete="off" />
+  </div>
+  <button class="sbtn" id="sbtn" onclick="send()">
+    <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+  </button>
+</div>
+<div class="foot">FixAI v1.0 · <span>Discount 360</span> · לשימוש פנימי בלבד</div>
+
+<script>
+const SYS = `You are FixAI, an AI troubleshooting assistant for Discount 360 bank call center employees. Solve IT issues fast so bankers don't wait for Help Desk.
+
+RULES:
+- Hebrew only. Short, friendly, simple.
+- Numbered steps. After each major step ask: "האם זה עזר? ✅"
+- Vague description: ask ONE clarifying question only.
+- After 3 failed steps → escalate.
+- Never explain WHY — only HOW to fix.
+
+ENVIRONMENT: Citrix Workspace, AVAYA Softphone H.323, WDE, MFA push via Citrix Secure Access.
+AVAYA servers: 192.152.2.100 and 192.152.2.200. WDE login: D + employee number.
+
+CITRIX: Globe=no internet→check network/hotspot. No Push→restart phone+PC. Emergency: "חיבור בחירום" folder→"קישור לעובדי דיסקונט idb"→Token from phone app (temporary). Frozen→"ניתוק משתמש מ-Citrix"→reopen.
+
+AVAYA NOT CONNECTING: Gear→Settings→General Settings→H.323+extension+password+servers 192.152.2.100+192.152.2.200→OK→Login.
+
+AVAYA FIRST SETUP: AVAYA icon→Telephony Setup→H.323→extension+password 1212(or 1234)→ADD 192.152.2.100→ADD 192.152.2.200→This Computer→Enable Emergency Calls→Finish.
+
+PASSWORD/UNLOCK: Call 076-8058559→employee number→action→SMS code→new password.
+
+AUDIO: Right-click speaker→Sound Settings→OUTPUT not muted→INPUT not muted→TEST. AVAYA→Settings→Audio: all 3 rows=same headset. Check physical Mute button.
+
+WDE: WDE→D+employee number→כניסה למערכת→extension→אישור.
+
+DUAL SCREEN: Check HDMI both ends. Right-click desktop→Display Settings→Detect→Extend→Apply. Shortcut: Win+P→Extend. Resolution: monitor 2→Recommended→Apply.
+
+DELL: Mask?→Enter+PIN. Red camera cover?→open. Forgot PIN?→domain password reset→PIN by SMS.
+
+ESCALATION: Help Desk 076-8058776 קוד 246 | AVAYA: 076-8058559`;
+
+let hist = [], busy = false, apiKey = 'AIzaSyBsJJYbVF-VVKJ7fn99aWZEB4hVp3_U8pI';
+
+// Load saved key
+
+
+
+function saveKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) return;
+  apiKey = val;
+  sessionStorage.setItem('fixai_key', val);
+  document.getElementById('setupBanner').style.display = 'none';
+  addMsg('מוכן! תאר את התקלה שלך 👍', 'bot');
+}
+
+function addMsg(text, who) {
+  const box = document.getElementById('msgs');
+  const w = box.querySelector('.welcome');
+  if (w) w.remove();
+  const row = document.createElement('div');
+  row.className = 'row ' + who;
+  const av = document.createElement('div');
+  av.className = 'av ' + who;
+  av.textContent = who === 'bot' ? 'F' : 'א';
+  const bub = document.createElement('div');
+  bub.className = 'bub ' + who;
+  bub.innerHTML = fmt(text, who);
+  row.appendChild(av); row.appendChild(bub);
+  box.appendChild(row);
+  box.scrollTop = box.scrollHeight;
+}
+
+function fmt(t, who) {
+  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/\n/g, '<br>');
+  if (who === 'bot' && t.includes('076-8058776')) {
+    t += '<div class="esc">📞 Help Desk: 076-8058776 &nbsp;|&nbsp; קוד 246</div>';
+  }
+  return t;
+}
+
+function showTyping() {
+  const box = document.getElementById('msgs');
+  const row = document.createElement('div');
+  row.className = 'row bot'; row.id = 'typ';
+  const av = document.createElement('div'); av.className = 'av bot'; av.textContent = 'F';
+  const bub = document.createElement('div'); bub.className = 'bub bot';
+  bub.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  row.appendChild(av); row.appendChild(bub);
+  box.appendChild(row); box.scrollTop = box.scrollHeight;
+}
+function rmTyping() { const t = document.getElementById('typ'); if (t) t.remove(); }
+
+async function send(preset) {
+  if (busy) return;
+  if (!apiKey) { alert('נא להכניס API Key תחילה'); return; }
+  const inp = document.getElementById('inp');
+  const msg = preset || inp.value.trim();
+  if (!msg) return;
+  inp.value = '';
+  addMsg(msg, 'user');
+  hist.push({ role: 'user', parts: [{ text: msg }] });
+  busy = true;
+  document.getElementById('sbtn').disabled = true;
+  showTyping();
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: SYS }] },
+          contents: hist,
+          generationConfig: { maxOutputTokens: 800, temperature: 0.3 }
+        })
+      }
+    );
+    const data = await res.json();
+    rmTyping();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'שגיאה. נסה שוב.';
+    addMsg(reply, 'bot');
+    hist.push({ role: 'model', parts: [{ text: reply }] });
+  } catch {
+    rmTyping();
+    addMsg('שגיאת תקשורת. בדוק חיבור ונסה שוב.', 'bot');
+  }
+  busy = false;
+  document.getElementById('sbtn').disabled = false;
+  inp.focus();
+}
+
+function q(t) { send(t); }
+
+function resetChat() {
+  hist = [];
+  document.getElementById('msgs').innerHTML = `
+    <div class="welcome">
+      <div class="welcome-icon">🛠️</div>
+      <h3>שלום! אני FixAI</h3>
+      <p>תאר את התקלה שלך בחופשיות, או בחר קטגוריה למעלה</p>
+      <div class="welcome-tags">
+        <span class="wtag">Citrix</span><span class="wtag">AVAYA</span>
+        <span class="wtag">שמע</span><span class="wtag">מסכים</span><span class="wtag">WDE</span>
+      </div>
+    </div>`;
+}
+
+document.getElementById('inp').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); send(); }
+});
+document.getElementById('apiKeyInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveKey();
+});
+</script>
+</body>
+</html>
